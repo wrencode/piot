@@ -3,10 +3,19 @@ version: '3.9'
 services:
 
   network-application:
-    image: lscr.io/linuxserver/unifi-controller:7.2.92
+    image: iot/unifi-network-application:7.2.92
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - UNIFI_VERSION_MAJOR=7
+        - UNIFI_VERSION_MINOR=2
+        - UNIFI_VERSION_PATCH=92
+        - PUID=1000
+        - PGID=1000
     platform: linux/arm64
     container_name: ${COMPOSE_PROJECT_NAME}
-    user: unifi
+#    user: unifi
 #    depends_on:
 #      - mongo
     environment:
@@ -14,11 +23,11 @@ services:
       - PGID=1000
       - MEM_LIMIT=1024 #optional
       - MEM_STARTUP=1024 #optional
-      - DB_URI=mongodb://mongo/unifi
-      - STATDB_URI=mongodb://mongo/unifi_stat
-      - DB_NAME=unifi
+#      - DB_URI=mongodb://mongo/unifi
+#      - STATDB_URI=mongodb://mongo/unifi_stat
+#      - DB_NAME=unifi
     networks:
-      -   unifi_network
+      - local_network
     ports:
       - "8443:8443/tcp" # Controller GUI/API as seen in a web browser
       - "8080:8080/tcp" # Device/controller communication
@@ -36,7 +45,7 @@ services:
 #    platform: linux/arm64
 #    container_name: ${COMPOSE_PROJECT_NAME}-mongo
 #    networks:
-#      - unifi_network
+#      - local_network
 #    restart: always
 #    volumes:
 #      - mongo_data:/data/db
@@ -47,4 +56,4 @@ services:
 #  mongo_config:
 
 networks:
-  unifi_network:
+  local_network:
