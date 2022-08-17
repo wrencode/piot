@@ -52,7 +52,7 @@ services:
 #      - mongo_config:/data/configdb
 
   homebridge:
-    image: oznu/homebridge:2022-05-21-raspberry-pi
+    image: oznu/homebridge:latest
     platform: linux/arm64
     container_name: ${COMPOSE_PROJECT_NAME}-homebridge
     restart: always
