@@ -18,7 +18,7 @@ services:
       - STATDB_URI=mongodb://mongo/unifi_stat
       - DB_NAME=unifi
     networks:
-      - unifi
+      -   unifi_network
     ports:
       - "8443:8443/tcp" # Controller GUI/API as seen in a web browser
       - "8080:8080/tcp" # Device/controller communication
@@ -36,7 +36,7 @@ services:
 #    platform: linux/arm64
 #    container_name: ${COMPOSE_PROJECT_NAME}-mongo
 #    networks:
-#      - unifi
+#      - unifi_network
 #    restart: always
 #    volumes:
 #      - mongo_data:/data/db
