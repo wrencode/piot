@@ -55,7 +55,7 @@ services:
     image: oznu/homebridge:latest
     platform: linux/arm64
     container_name: ${COMPOSE_PROJECT_NAME}-homebridge
-    restart: always
+    restart: unless-stopped
     network_mode: host
     environment:
       - PUID=1000
