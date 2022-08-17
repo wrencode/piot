@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+
+  network-application:
+    image: lscr.io/linuxserver/unifi-controller:7.2.92
+    platform: linux/arm64
+    container_name: ${COMPOSE_PROJECT_NAME}
+    user: unifi
+#    depends_on:
+#      - mongo
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MEM_LIMIT=1024 #optional
+      - MEM_STARTUP=1024 #optional
+      - DB_URI=mongodb://mongo/unifi
+      - STATDB_URI=mongodb://mongo/unifi_stat
+      - DB_NAME=unifi
+    networks:
+      - unifi
+    ports:
+      - "8443:8443/tcp" # Controller GUI/API as seen in a web browser
+      - "8080:8080/tcp" # Device/controller communication
+      - "10001:10001/udp" # AP discovery
+      - "3478:3478/udp" # STUN
+      - "6789:6789/tcp" # Speed test
+      - "8880:8880/tcp" # HTTP portal redirection
+      - "8843:8843/tcp" # HTTPS portal redirection
+    restart: unless-stopped
+    volumes:
+      - ./data:/config
+
+#  mongo:
+#    image: mongo:3.6.23
+#    platform: linux/arm64
+#    container_name: ${COMPOSE_PROJECT_NAME}-mongo
+#    networks:
+#      - unifi
+#    restart: always
+#    volumes:
+#      - mongo_data:/data/db
+#      - mongo_config:/data/configdb
+
+#volumes:
+#  mongo_data:
+#  mongo_config:
+
+networks:
+  unifi_network:
