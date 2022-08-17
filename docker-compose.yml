@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
 
-  network-application:
+  unifi-network-application:
     image: iot/unifi-network-application:7.2.92
     build:
       context: .
@@ -14,7 +14,7 @@ services:
         - PUID=1000
         - PGID=1000
     platform: linux/arm64
-    container_name: ${COMPOSE_PROJECT_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}_unifi-network-application
 #    user: unifi
 #    depends_on:
 #      - mongo
@@ -27,7 +27,7 @@ services:
 #      - STATDB_URI=mongodb://mongo/unifi_stat
 #      - DB_NAME=unifi
     networks:
-      - local_network
+      - piot_network
     ports:
       - "8443:8443/tcp" # Controller GUI/API as seen in a web browser
       - "8080:8080/tcp" # Device/controller communication
@@ -38,22 +38,35 @@ services:
       - "8843:8843/tcp" # HTTPS portal redirection
     restart: unless-stopped
     volumes:
-      - ./data:/config
+      - ./data/unifi:/config
 
 #  mongo:
 #    image: mongo:3.6.23
 #    platform: linux/arm64
 #    container_name: ${COMPOSE_PROJECT_NAME}-mongo
 #    networks:
-#      - local_network
+#      - piot_network
 #    restart: always
 #    volumes:
 #      - mongo_data:/data/db
 #      - mongo_config:/data/configdb
+
+  homebridge:
+    image: oznu/homebridge:latest
+    platform: linux/arm64
+    container_name: ${COMPOSE_PROJECT_NAME}-homebridge
+    restart: always
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - HOMEBRIDGE_CONFIG_UI_PORT=8581
+    volumes:
+      - ./data/homebridge:/homebridge
 
 #volumes:
 #  mongo_data:
 #  mongo_config:
 
 networks:
-  local_network:
+  piot_network:
