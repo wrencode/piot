@@ -14,18 +14,14 @@ services:
         - PUID=1000
         - PGID=1000
     platform: linux/arm64
-    container_name: ${COMPOSE_PROJECT_NAME}_unifi-network-application
-#    user: unifi
-#    depends_on:
-#      - mongo
+    container_name: ${COMPOSE_PROJECT_NAME}-unifi_network_application
+    depends_on:
+      - unifi-network-application-mongo
     environment:
       - PUID=1000
       - PGID=1000
       - MEM_LIMIT=1024 #optional
       - MEM_STARTUP=1024 #optional
-#      - DB_URI=mongodb://mongo/unifi
-#      - STATDB_URI=mongodb://mongo/unifi_stat
-#      - DB_NAME=unifi
     networks:
       - piot_network
     ports:
@@ -39,17 +35,17 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/unifi:/config
+      #- unifi_mongo_data:/config/data/db
 
-#  mongo:
-#    image: mongo:3.6.23
-#    platform: linux/arm64
-#    container_name: ${COMPOSE_PROJECT_NAME}-mongo
-#    networks:
-#      - piot_network
-#    restart: always
-#    volumes:
-#      - mongo_data:/data/db
-#      - mongo_config:/data/configdb
+  unifi-network-application-mongo:
+    image: mongo:3.6.23
+    platform: linux/arm64
+    container_name: ${COMPOSE_PROJECT_NAME}-unifi_network_application-mongo
+    networks:
+      - piot_network
+    restart: unless-stopped
+    volumes:
+      -   unifi_mongo_data:/data/db
 
   homebridge:
     image: oznu/homebridge:latest
@@ -64,9 +60,8 @@ services:
     volumes:
       - ./data/homebridge:/homebridge
 
-#volumes:
-#  mongo_data:
-#  mongo_config:
+volumes:
+  unifi_mongo_data:
 
 networks:
   piot_network:

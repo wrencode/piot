@@ -1,5 +1,9 @@
-# piot
+# piot - IoT Services on Raspberry Pi
 
-Docker compose setup for running IoT services in Docker on a Raspberry Pi running Raspberry Pi OS:
+Docker compose setup for running IoT services in Docker on a Raspberry Pi running Raspberry Pi OS (64-bit):
 
-- Ubiquiti UniFI Network Application
+- Ubiquiti UniFi Network Application
+
+  - MongoDB instance (external) for UniFi
+
+- Homebridge Server
