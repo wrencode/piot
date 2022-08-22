@@ -49,7 +49,7 @@ services:
       - piot_network
     restart: unless-stopped
     volumes:
-      -   unifi_mongo_data:/data/db
+      - unifi_mongo_data:/data/db
 
   homebridge:
     image: oznu/homebridge:latest
@@ -75,8 +75,7 @@ services:
     environment:
       TZ: "America/New_York"
       WEBPASSWORD: "pih0le@home"
-    networks:
-      - piot_network
+    network_mode: host
     # For DHCP, it is recommended to remove these ports and instead add: network_mode: "host"
     ports:
       - "53:53/tcp"
