@@ -3,14 +3,14 @@ version: "3.9"
 services:
 
   unifi-network-application:
-    image: iot/unifi-network-application:7.2.92
+    image: iot/unifi-network-application:7.3.76
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
         - UNIFI_VERSION_MAJOR=7
-        - UNIFI_VERSION_MINOR=2
-        - UNIFI_VERSION_PATCH=92
+        - UNIFI_VERSION_MINOR=3
+        - UNIFI_VERSION_PATCH=76
         - PUID=1000
         - PGID=1000
     platform: linux/arm64
