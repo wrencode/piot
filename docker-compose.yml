@@ -17,6 +17,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-unifi_network_application
     profiles:
       - primary
+      - network
     depends_on:
       - unifi-network-application-mongo
     environment:
@@ -45,6 +46,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-unifi_network_application-mongo
     profiles:
       - primary
+      - network
     networks:
       - piot_network
     restart: unless-stopped
@@ -57,6 +59,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-homebridge
     profiles:
       - primary
+      - iot
     restart: unless-stopped
     environment:
       - PUID=1000
