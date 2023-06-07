@@ -3,14 +3,14 @@ version: "3.9"
 services:
 
   unifi-network-application:
-    image: iot/unifi-network-application:7.3.76
+    image: iot/unifi-network-application:${UNIFI_VERSION_MAJOR}.${UNIFI_VERSION_MINOR}.${UNIFI_VERSION_PATCH}
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
-        - UNIFI_VERSION_MAJOR=7
-        - UNIFI_VERSION_MINOR=3
-        - UNIFI_VERSION_PATCH=76
+        - UNIFI_VERSION_MAJOR=${UNIFI_VERSION_MAJOR}
+        - UNIFI_VERSION_MINOR=${UNIFI_VERSION_MINOR}
+        - UNIFI_VERSION_PATCH=${UNIFI_VERSION_PATCH}
         - PUID=1000
         - PGID=1000
     platform: linux/arm64
@@ -54,7 +54,7 @@ services:
       - unifi_mongo_data:/data/db
 
   homebridge:
-    image: oznu/homebridge:2023-01-08-ubuntu
+    image: oznu/homebridge:${HOMEBRIDGE_VERSION_DATE}-ubuntu
     platform: linux/arm64
     container_name: ${COMPOSE_PROJECT_NAME}-homebridge
     profiles:
